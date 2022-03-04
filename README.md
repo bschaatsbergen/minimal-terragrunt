@@ -44,3 +44,29 @@ inputs = {
 The input is injected as values for your module its variables. In both our `iam` and `s3` modules we have a `environment` variable, I therefore declare its value in the `/environments/dev/terragrunt.hcl` file, and inherit it from both the `environments/dev/iam` `environments/dev/s3` directory.
 
 If I have a value for a module that isn't shared with other modules, I can declare it in the `/environments/dev/iam/terragrunt.hcl` file, e.g. the `default_bucket_arn` input I declared.
+
+## Dependencies and passing values to modules
+
+My favorite way to pass values to modules is to use Terragrunt. You can pass values to modules by using the dependency syntax.
+In the `/environments/dev/iam/terragrunt.hcl` file we declare a dependency on the `s3` module, and pass its output to the `iam` module.
+
+```hcl
+inputs = {
+  default_bucket_arn = dependency.s3.outputs.default_bucket_arn
+}
+
+dependency "s3" {
+  config_path = "${get_path_to_repo_root()}/environments/dev/s3"
+
+  mock_outputs = {
+    default_bucket_arn = "arn:aws:s3:::example-bucket"
+  }
+}
+```
+
+The mock_outputs are used to mock the outputs of the `s3` module, so that we can test the `iam` module without having to create a real S3 bucket.
+
+
+## Contribute
+
+If you want to contribute to this project, please open an issue or pull request.

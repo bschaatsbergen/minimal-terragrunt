@@ -31,6 +31,6 @@ func TestIAMModule(t *testing.T) {
 	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
 
-	// Clean up after ourselves to prevent leftover state in the `.terragrunt-cache` directory
+	// Clean up any existing `.terragrunt-cache` directory
 	deleteTerragruntCache(t, moduleDir)
 }

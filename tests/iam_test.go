@@ -29,5 +29,7 @@ func TestIAMModule(t *testing.T) {
 	})
 
 	terraform.InitAndApply(t, terraformOptions)
-	terraform.Destroy(t, terraformOptions)
+
+	// Clean up any resources that were created
+	defer terraform.Destroy(t, terraformOptions)
 }

@@ -1,5 +1,12 @@
+resource "random_string" "default" {
+  length = 4
+  upper = false
+  lower = true
+  special = false
+}
+
 resource "aws_iam_role" "default" {
-  name = "example-lambda-role-${var.environment}"
+  name = "${random_string.default.result}-lambda-role-${var.environment}"
 
   assume_role_policy = <<POLICY
 {
@@ -18,7 +25,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "default" {
-  name = "example-lambda-role-policy-${var.environment}"
+  name = "${random_string.default.result}-lambda-role-policy-${var.environment}"
   role = aws_iam_role.default.id
 
   policy = <<POLICY

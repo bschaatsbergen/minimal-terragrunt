@@ -13,7 +13,7 @@ func TestIAMModule(t *testing.T) {
 	moduleDir := "../environments/dev/iam"
 
 	// Clean up any existing `.terragrunt-cache` directory
-	deleteTerragruntCache(t, moduleDir)
+	defer deleteTerragruntCache(t, moduleDir)
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformBinary: "terragrunt",
@@ -28,9 +28,6 @@ func TestIAMModule(t *testing.T) {
 		Reconfigure: true,
 	})
 
-	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
-
-	// Clean up any existing `.terragrunt-cache` directory
-	deleteTerragruntCache(t, moduleDir)
+	terraform.Destroy(t, terraformOptions)
 }

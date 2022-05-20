@@ -1,5 +1,12 @@
+resource "random_string" "default" {
+  length = 4
+  upper = false
+  lower = true
+  special = false
+}
+
 resource "aws_s3_bucket" "default" {
-  bucket = "example-bucket-${var.environment}"
+  bucket = "${random_string.default.result}-bucket-${var.environment}"
 }
 
 resource "aws_s3_bucket_acl" "default" {

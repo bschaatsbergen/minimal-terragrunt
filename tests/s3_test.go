@@ -30,10 +30,12 @@ func TestS3Module(t *testing.T) {
 	})
 
 	terraform.InitAndApply(t, terraformOptions)
-	bucketID := terraform.Output(t, terraformOptions, "bucket_id")
 
 	// Clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
+
+	// Get the bucket name from terraform output
+	bucketID := terraform.Output(t, terraformOptions, "bucket_id")
 
 	// Create an S3 session
 	s3client := s3.New(session.New(

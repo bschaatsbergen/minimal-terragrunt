@@ -8,8 +8,6 @@ import (
 )
 
 func TestIAMModule(t *testing.T) {
-	t.Parallel()
-
 	moduleDir := "../environments/dev/iam"
 
 	// Clean up any existing `.terragrunt-cache` directory
